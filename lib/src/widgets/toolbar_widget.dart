@@ -473,421 +473,421 @@ class ToolbarWidgetState extends State<ToolbarWidget> {
   List<Widget> _buildChildren() {
     var toolbarChildren = <Widget>[];
     for (var t in widget.htmlToolbarOptions.defaultToolbarButtons) {
-      if (t is StyleButtons && t.style) {
-        toolbarChildren.add(Container(
-          padding: const EdgeInsets.only(left: 8.0),
-          height: widget.htmlToolbarOptions.toolbarItemHeight,
-          decoration: !widget.htmlToolbarOptions.renderBorder
-              ? null
-              : widget.htmlToolbarOptions.dropdownBoxDecoration ??
-                  BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withOpacity(0.12))),
-          child: CustomDropdownButtonHideUnderline(
-            child: CustomDropdownButton<String>(
-              elevation: widget.htmlToolbarOptions.dropdownElevation,
-              icon: widget.htmlToolbarOptions.dropdownIcon,
-              iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
-              iconSize: widget.htmlToolbarOptions.dropdownIconSize,
-              itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
-              focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
-              dropdownColor: widget.htmlToolbarOptions.dropdownBackgroundColor,
-              menuDirection: widget.htmlToolbarOptions.dropdownMenuDirection ??
-                  (widget.htmlToolbarOptions.toolbarPosition ==
-                          ToolbarPosition.belowEditor
-                      ? DropdownMenuDirection.up
-                      : DropdownMenuDirection.down),
-              menuMaxHeight: widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
-                  MediaQuery.of(context).size.height / 3,
-              style: widget.htmlToolbarOptions.textStyle,
-              items: [
-                CustomDropdownMenuItem(
-                    value: 'p',
-                    child: PointerInterceptor(child: Text('Normal'))),
-                CustomDropdownMenuItem(
-                    value: 'blockquote',
-                    child: PointerInterceptor(
-                      child: Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  left: BorderSide(
-                                      color: Colors.grey, width: 3.0))),
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text('Quote',
-                              style: TextStyle(
-                                  fontFamily: 'times', color: Colors.grey))),
-                    )),
-                CustomDropdownMenuItem(
-                    value: 'pre',
-                    child: PointerInterceptor(
-                      child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.grey),
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text('Code',
-                              style: TextStyle(
-                                  fontFamily: 'courier', color: Colors.white))),
-                    )),
-                CustomDropdownMenuItem(
-                  value: 'h1',
-                  child: PointerInterceptor(
-                      child: Text('Header 1',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 32))),
-                ),
-                CustomDropdownMenuItem(
-                  value: 'h2',
-                  child: PointerInterceptor(
-                      child: Text('Header 2',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 24))),
-                ),
-                CustomDropdownMenuItem(
-                  value: 'h3',
-                  child: PointerInterceptor(
-                      child: Text('Header 3',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18))),
-                ),
-                CustomDropdownMenuItem(
-                  value: 'h4',
-                  child: PointerInterceptor(
-                      child: Text('Header 4',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16))),
-                ),
-                CustomDropdownMenuItem(
-                  value: 'h5',
-                  child: PointerInterceptor(
-                      child: Text('Header 5',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 13))),
-                ),
-                CustomDropdownMenuItem(
-                  value: 'h6',
-                  child: PointerInterceptor(
-                      child: Text('Header 6',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 11))),
-                ),
-              ],
-              value: _fontSelectedItem,
-              onChanged: (String? changed) async {
-                void updateSelectedItem(dynamic changed) {
-                  if (changed is String) {
-                    setState(mounted, this.setState, () {
-                      _fontSelectedItem = changed;
-                    });
-                  }
-                }
-
-                if (changed != null) {
-                  var proceed =
-                      await widget.htmlToolbarOptions.onDropdownChanged?.call(
-                              DropdownType.style,
-                              changed,
-                              updateSelectedItem) ??
-                          true;
-                  if (proceed) {
-                    widget.controller
-                        .execCommand('formatBlock', argument: changed);
-                    updateSelectedItem(changed);
-                  }
-                }
-              },
-            ),
-          ),
-        ));
-      }
-      if (t is FontSettingButtons) {
-        if (t.fontName) {
-          toolbarChildren.add(Container(
-            padding: const EdgeInsets.only(left: 8.0),
-            height: widget.htmlToolbarOptions.toolbarItemHeight,
-            decoration: !widget.htmlToolbarOptions.renderBorder
-                ? null
-                : widget.htmlToolbarOptions.dropdownBoxDecoration ??
-                    BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        border: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.12))),
-            child: CustomDropdownButtonHideUnderline(
-              child: CustomDropdownButton<String>(
-                elevation: widget.htmlToolbarOptions.dropdownElevation,
-                icon: widget.htmlToolbarOptions.dropdownIcon,
-                iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
-                iconSize: widget.htmlToolbarOptions.dropdownIconSize,
-                itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
-                focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
-                dropdownColor:
-                    widget.htmlToolbarOptions.dropdownBackgroundColor,
-                menuDirection:
-                    widget.htmlToolbarOptions.dropdownMenuDirection ??
-                        (widget.htmlToolbarOptions.toolbarPosition ==
-                                ToolbarPosition.belowEditor
-                            ? DropdownMenuDirection.up
-                            : DropdownMenuDirection.down),
-                menuMaxHeight:
-                    widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
-                        MediaQuery.of(context).size.height / 3,
-                style: widget.htmlToolbarOptions.textStyle,
-                items: [
-                  CustomDropdownMenuItem(
-                    value: 'Courier New',
-                    child: PointerInterceptor(
-                        child: Text('Courier New',
-                            style: TextStyle(fontFamily: 'Courier'))),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 'sans-serif',
-                    child: PointerInterceptor(
-                        child: Text('Sans Serif',
-                            style: TextStyle(fontFamily: 'sans-serif'))),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 'Times New Roman',
-                    child: PointerInterceptor(
-                        child: Text('Times New Roman',
-                            style: TextStyle(fontFamily: 'Times'))),
-                  ),
-                ],
-                value: _fontNameSelectedItem,
-                onChanged: (String? changed) async {
-                  void updateSelectedItem(dynamic changed) async {
-                    if (changed is String) {
-                      setState(mounted, this.setState, () {
-                        _fontNameSelectedItem = changed;
-                      });
-                    }
-                  }
-
-                  if (changed != null) {
-                    var proceed =
-                        await widget.htmlToolbarOptions.onDropdownChanged?.call(
-                                DropdownType.fontName,
-                                changed,
-                                updateSelectedItem) ??
-                            true;
-                    if (proceed) {
-                      widget.controller
-                          .execCommand('fontName', argument: changed);
-                      updateSelectedItem(changed);
-                    }
-                  }
-                },
-              ),
-            ),
-          ));
-        }
-        if (t.fontSize) {
-          toolbarChildren.add(Container(
-            padding: const EdgeInsets.only(left: 8.0),
-            height: widget.htmlToolbarOptions.toolbarItemHeight,
-            decoration: !widget.htmlToolbarOptions.renderBorder
-                ? null
-                : widget.htmlToolbarOptions.dropdownBoxDecoration ??
-                    BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        border: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.12))),
-            child: CustomDropdownButtonHideUnderline(
-              child: CustomDropdownButton<double>(
-                elevation: widget.htmlToolbarOptions.dropdownElevation,
-                icon: widget.htmlToolbarOptions.dropdownIcon,
-                iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
-                iconSize: widget.htmlToolbarOptions.dropdownIconSize,
-                itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
-                focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
-                dropdownColor:
-                    widget.htmlToolbarOptions.dropdownBackgroundColor,
-                menuDirection:
-                    widget.htmlToolbarOptions.dropdownMenuDirection ??
-                        (widget.htmlToolbarOptions.toolbarPosition ==
-                                ToolbarPosition.belowEditor
-                            ? DropdownMenuDirection.up
-                            : DropdownMenuDirection.down),
-                menuMaxHeight:
-                    widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
-                        MediaQuery.of(context).size.height / 3,
-                style: widget.htmlToolbarOptions.textStyle,
-                items: [
-                  CustomDropdownMenuItem(
-                    value: 1,
-                    child: PointerInterceptor(
-                        child: Text(
-                            "${_fontSizeUnitSelectedItem == "px" ? "11" : "8"} $_fontSizeUnitSelectedItem")),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 2,
-                    child: PointerInterceptor(
-                        child: Text(
-                            "${_fontSizeUnitSelectedItem == "px" ? "13" : "10"} $_fontSizeUnitSelectedItem")),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 3,
-                    child: PointerInterceptor(
-                        child: Text(
-                            "${_fontSizeUnitSelectedItem == "px" ? "16" : "12"} $_fontSizeUnitSelectedItem")),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 4,
-                    child: PointerInterceptor(
-                        child: Text(
-                            "${_fontSizeUnitSelectedItem == "px" ? "19" : "14"} $_fontSizeUnitSelectedItem")),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 5,
-                    child: PointerInterceptor(
-                        child: Text(
-                            "${_fontSizeUnitSelectedItem == "px" ? "24" : "18"} $_fontSizeUnitSelectedItem")),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 6,
-                    child: PointerInterceptor(
-                        child: Text(
-                            "${_fontSizeUnitSelectedItem == "px" ? "32" : "24"} $_fontSizeUnitSelectedItem")),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 7,
-                    child: PointerInterceptor(
-                        child: Text(
-                            "${_fontSizeUnitSelectedItem == "px" ? "48" : "36"} $_fontSizeUnitSelectedItem")),
-                  ),
-                ],
-                value: _fontSizeSelectedItem,
-                onChanged: (double? changed) async {
-                  void updateSelectedItem(dynamic changed) {
-                    if (changed is double) {
-                      setState(mounted, this.setState, () {
-                        _fontSizeSelectedItem = changed;
-                      });
-                    }
-                  }
-
-                  if (changed != null) {
-                    var intChanged = changed.toInt();
-                    var proceed =
-                        await widget.htmlToolbarOptions.onDropdownChanged?.call(
-                                DropdownType.fontSize,
-                                changed,
-                                updateSelectedItem) ??
-                            true;
-                    if (proceed) {
-                      switch (intChanged) {
-                        case 1:
-                          _actualFontSizeSelectedItem = 11;
-                          break;
-                        case 2:
-                          _actualFontSizeSelectedItem = 13;
-                          break;
-                        case 3:
-                          _actualFontSizeSelectedItem = 16;
-                          break;
-                        case 4:
-                          _actualFontSizeSelectedItem = 19;
-                          break;
-                        case 5:
-                          _actualFontSizeSelectedItem = 24;
-                          break;
-                        case 6:
-                          _actualFontSizeSelectedItem = 32;
-                          break;
-                        case 7:
-                          _actualFontSizeSelectedItem = 48;
-                          break;
-                      }
-                      widget.controller.execCommand('fontSize',
-                          argument: changed.toString());
-                      updateSelectedItem(changed);
-                    }
-                  }
-                },
-              ),
-            ),
-          ));
-        }
-        if (t.fontSizeUnit) {
-          toolbarChildren.add(Container(
-            padding: const EdgeInsets.only(left: 8.0),
-            height: widget.htmlToolbarOptions.toolbarItemHeight,
-            decoration: !widget.htmlToolbarOptions.renderBorder
-                ? null
-                : widget.htmlToolbarOptions.dropdownBoxDecoration ??
-                    BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        border: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.12))),
-            child: CustomDropdownButtonHideUnderline(
-              child: CustomDropdownButton<String>(
-                elevation: widget.htmlToolbarOptions.dropdownElevation,
-                icon: widget.htmlToolbarOptions.dropdownIcon,
-                iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
-                iconSize: widget.htmlToolbarOptions.dropdownIconSize,
-                itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
-                focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
-                dropdownColor:
-                    widget.htmlToolbarOptions.dropdownBackgroundColor,
-                menuDirection:
-                    widget.htmlToolbarOptions.dropdownMenuDirection ??
-                        (widget.htmlToolbarOptions.toolbarPosition ==
-                                ToolbarPosition.belowEditor
-                            ? DropdownMenuDirection.up
-                            : DropdownMenuDirection.down),
-                menuMaxHeight:
-                    widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
-                        MediaQuery.of(context).size.height / 3,
-                style: widget.htmlToolbarOptions.textStyle,
-                items: [
-                  CustomDropdownMenuItem(
-                    value: 'pt',
-                    child: PointerInterceptor(child: Text('pt')),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 'px',
-                    child: PointerInterceptor(child: Text('px')),
-                  ),
-                ],
-                value: _fontSizeUnitSelectedItem,
-                onChanged: (String? changed) async {
-                  void updateSelectedItem(dynamic changed) {
-                    if (changed is String) {
-                      setState(mounted, this.setState, () {
-                        _fontSizeUnitSelectedItem = changed;
-                      });
-                    }
-                  }
-
-                  if (changed != null) {
-                    var proceed =
-                        await widget.htmlToolbarOptions.onDropdownChanged?.call(
-                                DropdownType.fontSizeUnit,
-                                changed,
-                                updateSelectedItem) ??
-                            true;
-                    if (proceed) {
-                      updateSelectedItem(changed);
-                    }
-                  }
-                },
-              ),
-            ),
-          ));
-        }
-      }
+      // if (t is StyleButtons && t.style) {
+      //   toolbarChildren.add(Container(
+      //     padding: const EdgeInsets.only(left: 8.0),
+      //     height: widget.htmlToolbarOptions.toolbarItemHeight,
+      //     decoration: !widget.htmlToolbarOptions.renderBorder
+      //         ? null
+      //         : widget.htmlToolbarOptions.dropdownBoxDecoration ??
+      //             BoxDecoration(
+      //                 color: Theme.of(context).scaffoldBackgroundColor,
+      //                 border: Border.all(
+      //                     color: Theme.of(context)
+      //                         .colorScheme
+      //                         .onSurface
+      //                         .withOpacity(0.12))),
+      //     child: CustomDropdownButtonHideUnderline(
+      //       child: CustomDropdownButton<String>(
+      //         elevation: widget.htmlToolbarOptions.dropdownElevation,
+      //         icon: widget.htmlToolbarOptions.dropdownIcon,
+      //         iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
+      //         iconSize: widget.htmlToolbarOptions.dropdownIconSize,
+      //         itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
+      //         focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
+      //         dropdownColor: widget.htmlToolbarOptions.dropdownBackgroundColor,
+      //         menuDirection: widget.htmlToolbarOptions.dropdownMenuDirection ??
+      //             (widget.htmlToolbarOptions.toolbarPosition ==
+      //                     ToolbarPosition.belowEditor
+      //                 ? DropdownMenuDirection.up
+      //                 : DropdownMenuDirection.down),
+      //         menuMaxHeight: widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
+      //             MediaQuery.of(context).size.height / 3,
+      //         style: widget.htmlToolbarOptions.textStyle,
+      //         items: [
+      //           CustomDropdownMenuItem(
+      //               value: 'p',
+      //               child: PointerInterceptor(child: Text('Normal'))),
+      //           CustomDropdownMenuItem(
+      //               value: 'blockquote',
+      //               child: PointerInterceptor(
+      //                 child: Container(
+      //                     decoration: BoxDecoration(
+      //                         border: Border(
+      //                             left: BorderSide(
+      //                                 color: Colors.grey, width: 3.0))),
+      //                     padding: EdgeInsets.symmetric(horizontal: 10.0),
+      //                     child: Text('Quote',
+      //                         style: TextStyle(
+      //                             fontFamily: 'times', color: Colors.grey))),
+      //               )),
+      //           CustomDropdownMenuItem(
+      //               value: 'pre',
+      //               child: PointerInterceptor(
+      //                 child: Container(
+      //                     decoration: BoxDecoration(
+      //                         borderRadius: BorderRadius.circular(5),
+      //                         color: Colors.grey),
+      //                     padding: EdgeInsets.symmetric(horizontal: 10.0),
+      //                     child: Text('Code',
+      //                         style: TextStyle(
+      //                             fontFamily: 'courier', color: Colors.white))),
+      //               )),
+      //           CustomDropdownMenuItem(
+      //             value: 'h1',
+      //             child: PointerInterceptor(
+      //                 child: Text('Header 1',
+      //                     style: TextStyle(
+      //                         fontWeight: FontWeight.bold, fontSize: 32))),
+      //           ),
+      //           CustomDropdownMenuItem(
+      //             value: 'h2',
+      //             child: PointerInterceptor(
+      //                 child: Text('Header 2',
+      //                     style: TextStyle(
+      //                         fontWeight: FontWeight.bold, fontSize: 24))),
+      //           ),
+      //           CustomDropdownMenuItem(
+      //             value: 'h3',
+      //             child: PointerInterceptor(
+      //                 child: Text('Header 3',
+      //                     style: TextStyle(
+      //                         fontWeight: FontWeight.bold, fontSize: 18))),
+      //           ),
+      //           CustomDropdownMenuItem(
+      //             value: 'h4',
+      //             child: PointerInterceptor(
+      //                 child: Text('Header 4',
+      //                     style: TextStyle(
+      //                         fontWeight: FontWeight.bold, fontSize: 16))),
+      //           ),
+      //           CustomDropdownMenuItem(
+      //             value: 'h5',
+      //             child: PointerInterceptor(
+      //                 child: Text('Header 5',
+      //                     style: TextStyle(
+      //                         fontWeight: FontWeight.bold, fontSize: 13))),
+      //           ),
+      //           CustomDropdownMenuItem(
+      //             value: 'h6',
+      //             child: PointerInterceptor(
+      //                 child: Text('Header 6',
+      //                     style: TextStyle(
+      //                         fontWeight: FontWeight.bold, fontSize: 11))),
+      //           ),
+      //         ],
+      //         value: _fontSelectedItem,
+      //         onChanged: (String? changed) async {
+      //           void updateSelectedItem(dynamic changed) {
+      //             if (changed is String) {
+      //               setState(mounted, this.setState, () {
+      //                 _fontSelectedItem = changed;
+      //               });
+      //             }
+      //           }
+      //
+      //           if (changed != null) {
+      //             var proceed =
+      //                 await widget.htmlToolbarOptions.onDropdownChanged?.call(
+      //                         DropdownType.style,
+      //                         changed,
+      //                         updateSelectedItem) ??
+      //                     true;
+      //             if (proceed) {
+      //               widget.controller
+      //                   .execCommand('formatBlock', argument: changed);
+      //               updateSelectedItem(changed);
+      //             }
+      //           }
+      //         },
+      //       ),
+      //     ),
+      //   ));
+      // }
+      // if (t is FontSettingButtons) {
+      //   if (t.fontName) {
+      //     toolbarChildren.add(Container(
+      //       padding: const EdgeInsets.only(left: 8.0),
+      //       height: widget.htmlToolbarOptions.toolbarItemHeight,
+      //       decoration: !widget.htmlToolbarOptions.renderBorder
+      //           ? null
+      //           : widget.htmlToolbarOptions.dropdownBoxDecoration ??
+      //               BoxDecoration(
+      //                   color: Theme.of(context).scaffoldBackgroundColor,
+      //                   border: Border.all(
+      //                       color: Theme.of(context)
+      //                           .colorScheme
+      //                           .onSurface
+      //                           .withOpacity(0.12))),
+      //       child: CustomDropdownButtonHideUnderline(
+      //         child: CustomDropdownButton<String>(
+      //           elevation: widget.htmlToolbarOptions.dropdownElevation,
+      //           icon: widget.htmlToolbarOptions.dropdownIcon,
+      //           iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
+      //           iconSize: widget.htmlToolbarOptions.dropdownIconSize,
+      //           itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
+      //           focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
+      //           dropdownColor:
+      //               widget.htmlToolbarOptions.dropdownBackgroundColor,
+      //           menuDirection:
+      //               widget.htmlToolbarOptions.dropdownMenuDirection ??
+      //                   (widget.htmlToolbarOptions.toolbarPosition ==
+      //                           ToolbarPosition.belowEditor
+      //                       ? DropdownMenuDirection.up
+      //                       : DropdownMenuDirection.down),
+      //           menuMaxHeight:
+      //               widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
+      //                   MediaQuery.of(context).size.height / 3,
+      //           style: widget.htmlToolbarOptions.textStyle,
+      //           items: [
+      //             CustomDropdownMenuItem(
+      //               value: 'Courier New',
+      //               child: PointerInterceptor(
+      //                   child: Text('Courier New',
+      //                       style: TextStyle(fontFamily: 'Courier'))),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 'sans-serif',
+      //               child: PointerInterceptor(
+      //                   child: Text('Sans Serif',
+      //                       style: TextStyle(fontFamily: 'sans-serif'))),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 'Times New Roman',
+      //               child: PointerInterceptor(
+      //                   child: Text('Times New Roman',
+      //                       style: TextStyle(fontFamily: 'Times'))),
+      //             ),
+      //           ],
+      //           value: _fontNameSelectedItem,
+      //           onChanged: (String? changed) async {
+      //             void updateSelectedItem(dynamic changed) async {
+      //               if (changed is String) {
+      //                 setState(mounted, this.setState, () {
+      //                   _fontNameSelectedItem = changed;
+      //                 });
+      //               }
+      //             }
+      //
+      //             if (changed != null) {
+      //               var proceed =
+      //                   await widget.htmlToolbarOptions.onDropdownChanged?.call(
+      //                           DropdownType.fontName,
+      //                           changed,
+      //                           updateSelectedItem) ??
+      //                       true;
+      //               if (proceed) {
+      //                 widget.controller
+      //                     .execCommand('fontName', argument: changed);
+      //                 updateSelectedItem(changed);
+      //               }
+      //             }
+      //           },
+      //         ),
+      //       ),
+      //     ));
+      //   }
+      //   if (t.fontSize) {
+      //     toolbarChildren.add(Container(
+      //       padding: const EdgeInsets.only(left: 8.0),
+      //       height: widget.htmlToolbarOptions.toolbarItemHeight,
+      //       decoration: !widget.htmlToolbarOptions.renderBorder
+      //           ? null
+      //           : widget.htmlToolbarOptions.dropdownBoxDecoration ??
+      //               BoxDecoration(
+      //                   color: Theme.of(context).scaffoldBackgroundColor,
+      //                   border: Border.all(
+      //                       color: Theme.of(context)
+      //                           .colorScheme
+      //                           .onSurface
+      //                           .withOpacity(0.12))),
+      //       child: CustomDropdownButtonHideUnderline(
+      //         child: CustomDropdownButton<double>(
+      //           elevation: widget.htmlToolbarOptions.dropdownElevation,
+      //           icon: widget.htmlToolbarOptions.dropdownIcon,
+      //           iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
+      //           iconSize: widget.htmlToolbarOptions.dropdownIconSize,
+      //           itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
+      //           focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
+      //           dropdownColor:
+      //               widget.htmlToolbarOptions.dropdownBackgroundColor,
+      //           menuDirection:
+      //               widget.htmlToolbarOptions.dropdownMenuDirection ??
+      //                   (widget.htmlToolbarOptions.toolbarPosition ==
+      //                           ToolbarPosition.belowEditor
+      //                       ? DropdownMenuDirection.up
+      //                       : DropdownMenuDirection.down),
+      //           menuMaxHeight:
+      //               widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
+      //                   MediaQuery.of(context).size.height / 3,
+      //           style: widget.htmlToolbarOptions.textStyle,
+      //           items: [
+      //             CustomDropdownMenuItem(
+      //               value: 1,
+      //               child: PointerInterceptor(
+      //                   child: Text(
+      //                       "${_fontSizeUnitSelectedItem == "px" ? "11" : "8"} $_fontSizeUnitSelectedItem")),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 2,
+      //               child: PointerInterceptor(
+      //                   child: Text(
+      //                       "${_fontSizeUnitSelectedItem == "px" ? "13" : "10"} $_fontSizeUnitSelectedItem")),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 3,
+      //               child: PointerInterceptor(
+      //                   child: Text(
+      //                       "${_fontSizeUnitSelectedItem == "px" ? "16" : "12"} $_fontSizeUnitSelectedItem")),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 4,
+      //               child: PointerInterceptor(
+      //                   child: Text(
+      //                       "${_fontSizeUnitSelectedItem == "px" ? "19" : "14"} $_fontSizeUnitSelectedItem")),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 5,
+      //               child: PointerInterceptor(
+      //                   child: Text(
+      //                       "${_fontSizeUnitSelectedItem == "px" ? "24" : "18"} $_fontSizeUnitSelectedItem")),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 6,
+      //               child: PointerInterceptor(
+      //                   child: Text(
+      //                       "${_fontSizeUnitSelectedItem == "px" ? "32" : "24"} $_fontSizeUnitSelectedItem")),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 7,
+      //               child: PointerInterceptor(
+      //                   child: Text(
+      //                       "${_fontSizeUnitSelectedItem == "px" ? "48" : "36"} $_fontSizeUnitSelectedItem")),
+      //             ),
+      //           ],
+      //           value: _fontSizeSelectedItem,
+      //           onChanged: (double? changed) async {
+      //             void updateSelectedItem(dynamic changed) {
+      //               if (changed is double) {
+      //                 setState(mounted, this.setState, () {
+      //                   _fontSizeSelectedItem = changed;
+      //                 });
+      //               }
+      //             }
+      //
+      //             if (changed != null) {
+      //               var intChanged = changed.toInt();
+      //               var proceed =
+      //                   await widget.htmlToolbarOptions.onDropdownChanged?.call(
+      //                           DropdownType.fontSize,
+      //                           changed,
+      //                           updateSelectedItem) ??
+      //                       true;
+      //               if (proceed) {
+      //                 switch (intChanged) {
+      //                   case 1:
+      //                     _actualFontSizeSelectedItem = 11;
+      //                     break;
+      //                   case 2:
+      //                     _actualFontSizeSelectedItem = 13;
+      //                     break;
+      //                   case 3:
+      //                     _actualFontSizeSelectedItem = 16;
+      //                     break;
+      //                   case 4:
+      //                     _actualFontSizeSelectedItem = 19;
+      //                     break;
+      //                   case 5:
+      //                     _actualFontSizeSelectedItem = 24;
+      //                     break;
+      //                   case 6:
+      //                     _actualFontSizeSelectedItem = 32;
+      //                     break;
+      //                   case 7:
+      //                     _actualFontSizeSelectedItem = 48;
+      //                     break;
+      //                 }
+      //                 widget.controller.execCommand('fontSize',
+      //                     argument: changed.toString());
+      //                 updateSelectedItem(changed);
+      //               }
+      //             }
+      //           },
+      //         ),
+      //       ),
+      //     ));
+      //   }
+      //   if (t.fontSizeUnit) {
+      //     toolbarChildren.add(Container(
+      //       padding: const EdgeInsets.only(left: 8.0),
+      //       height: widget.htmlToolbarOptions.toolbarItemHeight,
+      //       decoration: !widget.htmlToolbarOptions.renderBorder
+      //           ? null
+      //           : widget.htmlToolbarOptions.dropdownBoxDecoration ??
+      //               BoxDecoration(
+      //                   color: Theme.of(context).scaffoldBackgroundColor,
+      //                   border: Border.all(
+      //                       color: Theme.of(context)
+      //                           .colorScheme
+      //                           .onSurface
+      //                           .withOpacity(0.12))),
+      //       child: CustomDropdownButtonHideUnderline(
+      //         child: CustomDropdownButton<String>(
+      //           elevation: widget.htmlToolbarOptions.dropdownElevation,
+      //           icon: widget.htmlToolbarOptions.dropdownIcon,
+      //           iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
+      //           iconSize: widget.htmlToolbarOptions.dropdownIconSize,
+      //           itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
+      //           focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
+      //           dropdownColor:
+      //               widget.htmlToolbarOptions.dropdownBackgroundColor,
+      //           menuDirection:
+      //               widget.htmlToolbarOptions.dropdownMenuDirection ??
+      //                   (widget.htmlToolbarOptions.toolbarPosition ==
+      //                           ToolbarPosition.belowEditor
+      //                       ? DropdownMenuDirection.up
+      //                       : DropdownMenuDirection.down),
+      //           menuMaxHeight:
+      //               widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
+      //                   MediaQuery.of(context).size.height / 3,
+      //           style: widget.htmlToolbarOptions.textStyle,
+      //           items: [
+      //             CustomDropdownMenuItem(
+      //               value: 'pt',
+      //               child: PointerInterceptor(child: Text('pt')),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 'px',
+      //               child: PointerInterceptor(child: Text('px')),
+      //             ),
+      //           ],
+      //           value: _fontSizeUnitSelectedItem,
+      //           onChanged: (String? changed) async {
+      //             void updateSelectedItem(dynamic changed) {
+      //               if (changed is String) {
+      //                 setState(mounted, this.setState, () {
+      //                   _fontSizeUnitSelectedItem = changed;
+      //                 });
+      //               }
+      //             }
+      //
+      //             if (changed != null) {
+      //               var proceed =
+      //                   await widget.htmlToolbarOptions.onDropdownChanged?.call(
+      //                           DropdownType.fontSizeUnit,
+      //                           changed,
+      //                           updateSelectedItem) ??
+      //                       true;
+      //               if (proceed) {
+      //                 updateSelectedItem(changed);
+      //               }
+      //             }
+      //           },
+      //         ),
+      //       ),
+      //     ));
+      //   }
+      // }
       if (t is FontButtons) {
         if (t.bold || t.italic || t.underline || t.clearAll) {
           toolbarChildren.add(ToggleButtons(
@@ -1022,200 +1022,200 @@ class ToolbarWidgetState extends State<ToolbarWidget> {
           ));
         }
       }
-      if (t is ColorButtons && (t.foregroundColor || t.highlightColor)) {
-        toolbarChildren.add(ToggleButtons(
-          constraints: BoxConstraints.tightFor(
-            width: widget.htmlToolbarOptions.toolbarItemHeight - 2,
-            height: widget.htmlToolbarOptions.toolbarItemHeight - 2,
-          ),
-          color: widget.htmlToolbarOptions.buttonColor,
-          selectedColor: widget.htmlToolbarOptions.buttonSelectedColor,
-          fillColor: widget.htmlToolbarOptions.buttonFillColor,
-          focusColor: widget.htmlToolbarOptions.buttonFocusColor,
-          highlightColor: widget.htmlToolbarOptions.buttonHighlightColor,
-          hoverColor: widget.htmlToolbarOptions.buttonHoverColor,
-          splashColor: widget.htmlToolbarOptions.buttonSplashColor,
-          selectedBorderColor:
-              widget.htmlToolbarOptions.buttonSelectedBorderColor,
-          borderColor: widget.htmlToolbarOptions.buttonBorderColor,
-          borderRadius: widget.htmlToolbarOptions.buttonBorderRadius,
-          borderWidth: widget.htmlToolbarOptions.buttonBorderWidth,
-          renderBorder: widget.htmlToolbarOptions.renderBorder,
-          textStyle: widget.htmlToolbarOptions.textStyle,
-          onPressed: (int index) async {
-            void updateStatus(Color? color) {
-              setState(mounted, this.setState, () {
-                _colorSelected[index] = !_colorSelected[index];
-                if (color != null && t.getIcons()[index].icon == Icons.format_color_text) {
-                  _foreColorSelected = color;
-                }
-                if (color != null && t.getIcons()[index].icon == Icons.format_color_fill) {
-                  _backColorSelected = color;
-                }
-              });
-            }
-
-            if (_colorSelected[index]) {
-              if (t.getIcons()[index].icon == Icons.format_color_text) {
-                var proceed = await widget.htmlToolbarOptions.onButtonPressed
-                        ?.call(ButtonType.foregroundColor,
-                            _colorSelected[index], updateStatus) ??
-                    true;
-                if (proceed) {
-                  widget.controller.execCommand('foreColor',
-                      argument: (Colors.black.value & 0xFFFFFF)
-                          .toRadixString(16)
-                          .padLeft(6, '0')
-                          .toUpperCase());
-                  updateStatus(null);
-                }
-              }
-              if (t.getIcons()[index].icon == Icons.format_color_fill) {
-                var proceed = await widget.htmlToolbarOptions.onButtonPressed
-                        ?.call(ButtonType.highlightColor, _colorSelected[index],
-                            updateStatus) ??
-                    true;
-                if (proceed) {
-                  widget.controller.execCommand('hiliteColor',
-                      argument: (Colors.yellow.value & 0xFFFFFF)
-                          .toRadixString(16)
-                          .padLeft(6, '0')
-                          .toUpperCase());
-                  updateStatus(null);
-                }
-              }
-            } else {
-              var proceed = true;
-              if (t.getIcons()[index].icon == Icons.format_color_text) {
-                proceed = await widget.htmlToolbarOptions.onButtonPressed?.call(
-                        ButtonType.foregroundColor,
-                        _colorSelected[index],
-                        updateStatus) ??
-                    true;
-              } else if (t.getIcons()[index].icon == Icons.format_color_fill) {
-                proceed = await widget.htmlToolbarOptions.onButtonPressed?.call(
-                        ButtonType.highlightColor,
-                        _colorSelected[index],
-                        updateStatus) ??
-                    true;
-              }
-              if (proceed) {
-                late Color newColor;
-                if (t.getIcons()[index].icon == Icons.format_color_text) {
-                  newColor = _foreColorSelected;
-                } else {
-                  newColor = _backColorSelected;
-                }
-                await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return PointerInterceptor(
-                        child: AlertDialog(
-                          scrollable: true,
-                          content: ColorPicker(
-                            color: newColor,
-                            onColorChanged: (color) {
-                              newColor = color;
-                            },
-                            title: Text('Choose a Color',
-                                style: Theme.of(context).textTheme.headline6),
-                            width: 40,
-                            height: 40,
-                            spacing: 0,
-                            runSpacing: 0,
-                            borderRadius: 0,
-                            wheelDiameter: 165,
-                            enableOpacity: false,
-                            showColorCode: true,
-                            colorCodeHasColor: true,
-                            pickersEnabled: <ColorPickerType, bool>{
-                              ColorPickerType.wheel: true,
-                            },
-                            copyPasteBehavior:
-                                const ColorPickerCopyPasteBehavior(
-                              parseShortHexCode: true,
-                            ),
-                            actionButtons: const ColorPickerActionButtons(
-                              dialogActionButtons: true,
-                            ),
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Cancel'),
-                            ),
-                            TextButton(
-                                onPressed: () {
-                                  if (t.getIcons()[index].icon ==
-                                      Icons.format_color_text) {
-                                    setState(mounted, this.setState, () {
-                                      _foreColorSelected = Colors.black;
-                                    });
-                                    widget.controller.execCommand(
-                                        'removeFormat',
-                                        argument: 'foreColor');
-                                    widget.controller.execCommand('foreColor',
-                                        argument: 'initial');
-                                  }
-                                  if (t.getIcons()[index].icon ==
-                                      Icons.format_color_fill) {
-                                    setState(mounted, this.setState, () {
-                                      _backColorSelected = Colors.yellow;
-                                    });
-                                    widget.controller.execCommand(
-                                        'removeFormat',
-                                        argument: 'hiliteColor');
-                                    widget.controller.execCommand('hiliteColor',
-                                        argument: 'initial');
-                                  }
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('Reset to default color')),
-                            TextButton(
-                              onPressed: () {
-                                if (t.getIcons()[index].icon ==
-                                    Icons.format_color_text) {
-                                  widget.controller.execCommand('foreColor',
-                                      argument: (newColor.value & 0xFFFFFF)
-                                          .toRadixString(16)
-                                          .padLeft(6, '0')
-                                          .toUpperCase());
-                                  setState(mounted, this.setState, () {
-                                    _foreColorSelected = newColor;
-                                  });
-                                }
-                                if (t.getIcons()[index].icon ==
-                                    Icons.format_color_fill) {
-                                  widget.controller.execCommand('hiliteColor',
-                                      argument: (newColor.value & 0xFFFFFF)
-                                          .toRadixString(16)
-                                          .padLeft(6, '0')
-                                          .toUpperCase());
-                                  setState(mounted, this.setState, () {
-                                    _backColorSelected = newColor;
-                                  });
-                                }
-                                setState(mounted, this.setState, () {
-                                  _colorSelected[index] =
-                                      !_colorSelected[index];
-                                });
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Set color'),
-                            )
-                          ],
-                        ),
-                      );
-                    });
-              }
-            }
-          },
-          isSelected: _colorSelected,
-          children: t.getIcons(),
-        ));
-      }
+      // if (t is ColorButtons && (t.foregroundColor || t.highlightColor)) {
+      //   toolbarChildren.add(ToggleButtons(
+      //     constraints: BoxConstraints.tightFor(
+      //       width: widget.htmlToolbarOptions.toolbarItemHeight - 2,
+      //       height: widget.htmlToolbarOptions.toolbarItemHeight - 2,
+      //     ),
+      //     color: widget.htmlToolbarOptions.buttonColor,
+      //     selectedColor: widget.htmlToolbarOptions.buttonSelectedColor,
+      //     fillColor: widget.htmlToolbarOptions.buttonFillColor,
+      //     focusColor: widget.htmlToolbarOptions.buttonFocusColor,
+      //     highlightColor: widget.htmlToolbarOptions.buttonHighlightColor,
+      //     hoverColor: widget.htmlToolbarOptions.buttonHoverColor,
+      //     splashColor: widget.htmlToolbarOptions.buttonSplashColor,
+      //     selectedBorderColor:
+      //         widget.htmlToolbarOptions.buttonSelectedBorderColor,
+      //     borderColor: widget.htmlToolbarOptions.buttonBorderColor,
+      //     borderRadius: widget.htmlToolbarOptions.buttonBorderRadius,
+      //     borderWidth: widget.htmlToolbarOptions.buttonBorderWidth,
+      //     renderBorder: widget.htmlToolbarOptions.renderBorder,
+      //     textStyle: widget.htmlToolbarOptions.textStyle,
+      //     onPressed: (int index) async {
+      //       void updateStatus(Color? color) {
+      //         setState(mounted, this.setState, () {
+      //           _colorSelected[index] = !_colorSelected[index];
+      //           if (color != null && t.getIcons()[index].icon == Icons.format_color_text) {
+      //             _foreColorSelected = color;
+      //           }
+      //           if (color != null && t.getIcons()[index].icon == Icons.format_color_fill) {
+      //             _backColorSelected = color;
+      //           }
+      //         });
+      //       }
+      //
+      //       if (_colorSelected[index]) {
+      //         if (t.getIcons()[index].icon == Icons.format_color_text) {
+      //           var proceed = await widget.htmlToolbarOptions.onButtonPressed
+      //                   ?.call(ButtonType.foregroundColor,
+      //                       _colorSelected[index], updateStatus) ??
+      //               true;
+      //           if (proceed) {
+      //             widget.controller.execCommand('foreColor',
+      //                 argument: (Colors.black.value & 0xFFFFFF)
+      //                     .toRadixString(16)
+      //                     .padLeft(6, '0')
+      //                     .toUpperCase());
+      //             updateStatus(null);
+      //           }
+      //         }
+      //         if (t.getIcons()[index].icon == Icons.format_color_fill) {
+      //           var proceed = await widget.htmlToolbarOptions.onButtonPressed
+      //                   ?.call(ButtonType.highlightColor, _colorSelected[index],
+      //                       updateStatus) ??
+      //               true;
+      //           if (proceed) {
+      //             widget.controller.execCommand('hiliteColor',
+      //                 argument: (Colors.yellow.value & 0xFFFFFF)
+      //                     .toRadixString(16)
+      //                     .padLeft(6, '0')
+      //                     .toUpperCase());
+      //             updateStatus(null);
+      //           }
+      //         }
+      //       } else {
+      //         var proceed = true;
+      //         if (t.getIcons()[index].icon == Icons.format_color_text) {
+      //           proceed = await widget.htmlToolbarOptions.onButtonPressed?.call(
+      //                   ButtonType.foregroundColor,
+      //                   _colorSelected[index],
+      //                   updateStatus) ??
+      //               true;
+      //         } else if (t.getIcons()[index].icon == Icons.format_color_fill) {
+      //           proceed = await widget.htmlToolbarOptions.onButtonPressed?.call(
+      //                   ButtonType.highlightColor,
+      //                   _colorSelected[index],
+      //                   updateStatus) ??
+      //               true;
+      //         }
+      //         if (proceed) {
+      //           late Color newColor;
+      //           if (t.getIcons()[index].icon == Icons.format_color_text) {
+      //             newColor = _foreColorSelected;
+      //           } else {
+      //             newColor = _backColorSelected;
+      //           }
+      //           await showDialog(
+      //               context: context,
+      //               builder: (BuildContext context) {
+      //                 return PointerInterceptor(
+      //                   child: AlertDialog(
+      //                     scrollable: true,
+      //                     content: ColorPicker(
+      //                       color: newColor,
+      //                       onColorChanged: (color) {
+      //                         newColor = color;
+      //                       },
+      //                       title: Text('Choose a Color',
+      //                           style: Theme.of(context).textTheme.headline6),
+      //                       width: 40,
+      //                       height: 40,
+      //                       spacing: 0,
+      //                       runSpacing: 0,
+      //                       borderRadius: 0,
+      //                       wheelDiameter: 165,
+      //                       enableOpacity: false,
+      //                       showColorCode: true,
+      //                       colorCodeHasColor: true,
+      //                       pickersEnabled: <ColorPickerType, bool>{
+      //                         ColorPickerType.wheel: true,
+      //                       },
+      //                       copyPasteBehavior:
+      //                           const ColorPickerCopyPasteBehavior(
+      //                         parseShortHexCode: true,
+      //                       ),
+      //                       actionButtons: const ColorPickerActionButtons(
+      //                         dialogActionButtons: true,
+      //                       ),
+      //                     ),
+      //                     actions: <Widget>[
+      //                       TextButton(
+      //                         onPressed: () {
+      //                           Navigator.of(context).pop();
+      //                         },
+      //                         child: Text('Cancel'),
+      //                       ),
+      //                       TextButton(
+      //                           onPressed: () {
+      //                             if (t.getIcons()[index].icon ==
+      //                                 Icons.format_color_text) {
+      //                               setState(mounted, this.setState, () {
+      //                                 _foreColorSelected = Colors.black;
+      //                               });
+      //                               widget.controller.execCommand(
+      //                                   'removeFormat',
+      //                                   argument: 'foreColor');
+      //                               widget.controller.execCommand('foreColor',
+      //                                   argument: 'initial');
+      //                             }
+      //                             if (t.getIcons()[index].icon ==
+      //                                 Icons.format_color_fill) {
+      //                               setState(mounted, this.setState, () {
+      //                                 _backColorSelected = Colors.yellow;
+      //                               });
+      //                               widget.controller.execCommand(
+      //                                   'removeFormat',
+      //                                   argument: 'hiliteColor');
+      //                               widget.controller.execCommand('hiliteColor',
+      //                                   argument: 'initial');
+      //                             }
+      //                             Navigator.of(context).pop();
+      //                           },
+      //                           child: Text('Reset to default color')),
+      //                       TextButton(
+      //                         onPressed: () {
+      //                           if (t.getIcons()[index].icon ==
+      //                               Icons.format_color_text) {
+      //                             widget.controller.execCommand('foreColor',
+      //                                 argument: (newColor.value & 0xFFFFFF)
+      //                                     .toRadixString(16)
+      //                                     .padLeft(6, '0')
+      //                                     .toUpperCase());
+      //                             setState(mounted, this.setState, () {
+      //                               _foreColorSelected = newColor;
+      //                             });
+      //                           }
+      //                           if (t.getIcons()[index].icon ==
+      //                               Icons.format_color_fill) {
+      //                             widget.controller.execCommand('hiliteColor',
+      //                                 argument: (newColor.value & 0xFFFFFF)
+      //                                     .toRadixString(16)
+      //                                     .padLeft(6, '0')
+      //                                     .toUpperCase());
+      //                             setState(mounted, this.setState, () {
+      //                               _backColorSelected = newColor;
+      //                             });
+      //                           }
+      //                           setState(mounted, this.setState, () {
+      //                             _colorSelected[index] =
+      //                                 !_colorSelected[index];
+      //                           });
+      //                           Navigator.of(context).pop();
+      //                         },
+      //                         child: Text('Set color'),
+      //                       )
+      //                     ],
+      //                   ),
+      //                 );
+      //               });
+      //         }
+      //       }
+      //     },
+      //     isSelected: _colorSelected,
+      //     children: t.getIcons(),
+      //   ));
+      // }
       if (t is ListButtons) {
         if (t.ul || t.ol) {
           toolbarChildren.add(ToggleButtons(
@@ -1375,380 +1375,380 @@ class ToolbarWidgetState extends State<ToolbarWidget> {
           ));
         }
       }
-      if (t is ParagraphButtons) {
-        if (t.alignLeft || t.alignCenter || t.alignRight || t.alignJustify) {
-          toolbarChildren.add(ToggleButtons(
-            constraints: BoxConstraints.tightFor(
-              width: widget.htmlToolbarOptions.toolbarItemHeight - 2,
-              height: widget.htmlToolbarOptions.toolbarItemHeight - 2,
-            ),
-            color: widget.htmlToolbarOptions.buttonColor,
-            selectedColor: widget.htmlToolbarOptions.buttonSelectedColor,
-            fillColor: widget.htmlToolbarOptions.buttonFillColor,
-            focusColor: widget.htmlToolbarOptions.buttonFocusColor,
-            highlightColor: widget.htmlToolbarOptions.buttonHighlightColor,
-            hoverColor: widget.htmlToolbarOptions.buttonHoverColor,
-            splashColor: widget.htmlToolbarOptions.buttonSplashColor,
-            selectedBorderColor:
-                widget.htmlToolbarOptions.buttonSelectedBorderColor,
-            borderColor: widget.htmlToolbarOptions.buttonBorderColor,
-            borderRadius: widget.htmlToolbarOptions.buttonBorderRadius,
-            borderWidth: widget.htmlToolbarOptions.buttonBorderWidth,
-            renderBorder: widget.htmlToolbarOptions.renderBorder,
-            textStyle: widget.htmlToolbarOptions.textStyle,
-            onPressed: (int index) async {
-              void updateStatus() {
-                _alignSelected = List<bool>.filled(t.getIcons1().length, false);
-                setState(mounted, this.setState, () {
-                  _alignSelected[index] = !_alignSelected[index];
-                });
-              }
-
-              if (t.getIcons1()[index].icon == Icons.format_align_left) {
-                var proceed = await widget.htmlToolbarOptions.onButtonPressed
-                        ?.call(ButtonType.alignLeft, _alignSelected[index],
-                            updateStatus) ??
-                    true;
-                if (proceed) {
-                  widget.controller.execCommand('justifyLeft');
-                  updateStatus();
-                }
-              }
-              if (t.getIcons1()[index].icon == Icons.format_align_center) {
-                var proceed = await widget.htmlToolbarOptions.onButtonPressed
-                        ?.call(ButtonType.alignCenter, _alignSelected[index],
-                            updateStatus) ??
-                    true;
-                if (proceed) {
-                  widget.controller.execCommand('justifyCenter');
-                  updateStatus();
-                }
-              }
-              if (t.getIcons1()[index].icon == Icons.format_align_right) {
-                var proceed = await widget.htmlToolbarOptions.onButtonPressed
-                        ?.call(ButtonType.alignRight, _alignSelected[index],
-                            updateStatus) ??
-                    true;
-                if (proceed) {
-                  widget.controller.execCommand('justifyRight');
-                  updateStatus();
-                }
-              }
-              if (t.getIcons1()[index].icon == Icons.format_align_justify) {
-                var proceed = await widget.htmlToolbarOptions.onButtonPressed
-                        ?.call(ButtonType.alignJustify, _alignSelected[index],
-                            updateStatus) ??
-                    true;
-                if (proceed) {
-                  widget.controller.execCommand('justifyFull');
-                  updateStatus();
-                }
-              }
-            },
-            isSelected: _alignSelected,
-            children: t.getIcons1(),
-          ));
-        }
-        if (t.increaseIndent || t.decreaseIndent) {
-          toolbarChildren.add(ToggleButtons(
-            constraints: BoxConstraints.tightFor(
-              width: widget.htmlToolbarOptions.toolbarItemHeight - 2,
-              height: widget.htmlToolbarOptions.toolbarItemHeight - 2,
-            ),
-            color: widget.htmlToolbarOptions.buttonColor,
-            selectedColor: widget.htmlToolbarOptions.buttonSelectedColor,
-            fillColor: widget.htmlToolbarOptions.buttonFillColor,
-            focusColor: widget.htmlToolbarOptions.buttonFocusColor,
-            highlightColor: widget.htmlToolbarOptions.buttonHighlightColor,
-            hoverColor: widget.htmlToolbarOptions.buttonHoverColor,
-            splashColor: widget.htmlToolbarOptions.buttonSplashColor,
-            selectedBorderColor:
-                widget.htmlToolbarOptions.buttonSelectedBorderColor,
-            borderColor: widget.htmlToolbarOptions.buttonBorderColor,
-            borderRadius: widget.htmlToolbarOptions.buttonBorderRadius,
-            borderWidth: widget.htmlToolbarOptions.buttonBorderWidth,
-            renderBorder: widget.htmlToolbarOptions.renderBorder,
-            textStyle: widget.htmlToolbarOptions.textStyle,
-            onPressed: (int index) async {
-              if (t.getIcons2()[index].icon == Icons.format_indent_increase) {
-                var proceed = await widget.htmlToolbarOptions.onButtonPressed
-                        ?.call(ButtonType.increaseIndent, null, null) ??
-                    true;
-                if (proceed) {
-                  widget.controller.execCommand('indent');
-                }
-              }
-              if (t.getIcons2()[index].icon == Icons.format_indent_decrease) {
-                var proceed = await widget.htmlToolbarOptions.onButtonPressed
-                        ?.call(ButtonType.decreaseIndent, null, null) ??
-                    true;
-                if (proceed) {
-                  widget.controller.execCommand('outdent');
-                }
-              }
-            },
-            isSelected: List<bool>.filled(t.getIcons2().length, false),
-            children: t.getIcons2(),
-          ));
-        }
-        if (t.lineHeight) {
-          toolbarChildren.add(Container(
-            padding: const EdgeInsets.only(left: 8.0),
-            height: widget.htmlToolbarOptions.toolbarItemHeight,
-            decoration: !widget.htmlToolbarOptions.renderBorder
-                ? null
-                : widget.htmlToolbarOptions.dropdownBoxDecoration ??
-                    BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        border: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.12))),
-            child: CustomDropdownButtonHideUnderline(
-              child: CustomDropdownButton<double>(
-                elevation: widget.htmlToolbarOptions.dropdownElevation,
-                icon: widget.htmlToolbarOptions.dropdownIcon,
-                iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
-                iconSize: widget.htmlToolbarOptions.dropdownIconSize,
-                itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
-                focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
-                dropdownColor:
-                    widget.htmlToolbarOptions.dropdownBackgroundColor,
-                menuDirection:
-                    widget.htmlToolbarOptions.dropdownMenuDirection ??
-                        (widget.htmlToolbarOptions.toolbarPosition ==
-                                ToolbarPosition.belowEditor
-                            ? DropdownMenuDirection.up
-                            : DropdownMenuDirection.down),
-                menuMaxHeight:
-                    widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
-                        MediaQuery.of(context).size.height / 3,
-                style: widget.htmlToolbarOptions.textStyle,
-                items: [
-                  CustomDropdownMenuItem(
-                      value: 1, child: PointerInterceptor(child: Text('1.0'))),
-                  CustomDropdownMenuItem(
-                    value: 1.2,
-                    child: PointerInterceptor(child: Text('1.2')),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 1.4,
-                    child: PointerInterceptor(child: Text('1.4')),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 1.5,
-                    child: PointerInterceptor(child: Text('1.5')),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 1.6,
-                    child: PointerInterceptor(child: Text('1.6')),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 1.8,
-                    child: PointerInterceptor(child: Text('1.8')),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 2,
-                    child: PointerInterceptor(child: Text('2.0')),
-                  ),
-                  CustomDropdownMenuItem(
-                      value: 3, child: PointerInterceptor(child: Text('3.0'))),
-                ],
-                value: _lineHeightSelectedItem,
-                onChanged: (double? changed) async {
-                  void updateSelectedItem(dynamic changed) {
-                    if (changed is double) {
-                      setState(mounted, this.setState, () {
-                        _lineHeightSelectedItem = changed;
-                      });
-                    }
-                  }
-
-                  if (changed != null) {
-                    var proceed =
-                        await widget.htmlToolbarOptions.onDropdownChanged?.call(
-                                DropdownType.lineHeight,
-                                changed,
-                                updateSelectedItem) ??
-                            true;
-                    if (proceed) {
-                      if (kIsWeb) {
-                        widget.controller.changeLineHeight(changed.toString());
-                      } else {
-                        await widget.controller.editorController!
-                            .evaluateJavascript(
-                                source:
-                                    "\$('#summernote-2').summernote('lineHeight', '$changed');");
-                      }
-                      updateSelectedItem(changed);
-                    }
-                  }
-                },
-              ),
-            ),
-          ));
-        }
-        if (t.textDirection) {
-          toolbarChildren.add(ToggleButtons(
-            constraints: BoxConstraints.tightFor(
-              width: widget.htmlToolbarOptions.toolbarItemHeight - 2,
-              height: widget.htmlToolbarOptions.toolbarItemHeight - 2,
-            ),
-            color: widget.htmlToolbarOptions.buttonColor,
-            selectedColor: widget.htmlToolbarOptions.buttonSelectedColor,
-            fillColor: widget.htmlToolbarOptions.buttonFillColor,
-            focusColor: widget.htmlToolbarOptions.buttonFocusColor,
-            highlightColor: widget.htmlToolbarOptions.buttonHighlightColor,
-            hoverColor: widget.htmlToolbarOptions.buttonHoverColor,
-            splashColor: widget.htmlToolbarOptions.buttonSplashColor,
-            selectedBorderColor:
-                widget.htmlToolbarOptions.buttonSelectedBorderColor,
-            borderColor: widget.htmlToolbarOptions.buttonBorderColor,
-            borderRadius: widget.htmlToolbarOptions.buttonBorderRadius,
-            borderWidth: widget.htmlToolbarOptions.buttonBorderWidth,
-            renderBorder: widget.htmlToolbarOptions.renderBorder,
-            textStyle: widget.htmlToolbarOptions.textStyle,
-            onPressed: (int index) async {
-              void updateStatus() {
-                _textDirectionSelected = List<bool>.filled(2, false);
-                setState(mounted, this.setState, () {
-                  _textDirectionSelected[index] =
-                      !_textDirectionSelected[index];
-                });
-              }
-
-              var proceed = await widget.htmlToolbarOptions.onButtonPressed
-                      ?.call(index == 0 ? ButtonType.ltr : ButtonType.rtl,
-                          _alignSelected[index], updateStatus) ??
-                  true;
-              if (proceed) {
-                if (kIsWeb) {
-                  widget.controller
-                      .changeTextDirection(index == 0 ? 'ltr' : 'rtl');
-                } else {
-                  await widget.controller.editorController!
-                      .evaluateJavascript(source: """
-                  var s=document.getSelection();			
-                  if(s==''){
-                      document.execCommand("insertHTML", false, "<p dir='${index == 0 ? "ltr" : "rtl"}'></p>");
-                  }else{
-                      document.execCommand("insertHTML", false, "<div dir='${index == 0 ? "ltr" : "rtl"}'>"+ document.getSelection()+"</div>");
-                  }
-                """);
-                }
-                updateStatus();
-              }
-            },
-            isSelected: _textDirectionSelected,
-            children: [
-              Icon(Icons.format_textdirection_l_to_r),
-              Icon(Icons.format_textdirection_r_to_l),
-            ],
-          ));
-        }
-        if (t.caseConverter) {
-          toolbarChildren.add(Container(
-            padding: const EdgeInsets.only(left: 8.0),
-            height: widget.htmlToolbarOptions.toolbarItemHeight,
-            decoration: !widget.htmlToolbarOptions.renderBorder
-                ? null
-                : widget.htmlToolbarOptions.dropdownBoxDecoration ??
-                    BoxDecoration(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        border: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.12))),
-            child: CustomDropdownButtonHideUnderline(
-              child: CustomDropdownButton<String>(
-                elevation: widget.htmlToolbarOptions.dropdownElevation,
-                icon: widget.htmlToolbarOptions.dropdownIcon,
-                iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
-                iconSize: widget.htmlToolbarOptions.dropdownIconSize,
-                itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
-                focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
-                dropdownColor:
-                    widget.htmlToolbarOptions.dropdownBackgroundColor,
-                menuDirection:
-                    widget.htmlToolbarOptions.dropdownMenuDirection ??
-                        (widget.htmlToolbarOptions.toolbarPosition ==
-                                ToolbarPosition.belowEditor
-                            ? DropdownMenuDirection.up
-                            : DropdownMenuDirection.down),
-                menuMaxHeight:
-                    widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
-                        MediaQuery.of(context).size.height / 3,
-                style: widget.htmlToolbarOptions.textStyle,
-                items: [
-                  CustomDropdownMenuItem(
-                    value: 'lower',
-                    child: PointerInterceptor(child: Text('lowercase')),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 'sentence',
-                    child: PointerInterceptor(child: Text('Sentence case')),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 'title',
-                    child: PointerInterceptor(child: Text('Title Case')),
-                  ),
-                  CustomDropdownMenuItem(
-                    value: 'upper',
-                    child: PointerInterceptor(child: Text('UPPERCASE')),
-                  ),
-                ],
-                hint: Text('Change case'),
-                value: null,
-                onChanged: (String? changed) async {
-                  if (changed != null) {
-                    var proceed = await widget
-                            .htmlToolbarOptions.onDropdownChanged
-                            ?.call(DropdownType.caseConverter, changed, null) ??
-                        true;
-                    if (proceed) {
-                      if (kIsWeb) {
-                        widget.controller.changeCase(changed);
-                      } else {
-                        await widget.controller.editorController!
-                            .evaluateJavascript(source: """
-                          var selected = \$('#summernote-2').summernote('createRange');
-                          if(selected.toString()){
-                              var texto;
-                              var count = 0;
-                              var value = "$changed";
-                              var nodes = selected.nodes();
-                              for (var i=0; i< nodes.length; ++i) {
-                                  if (nodes[i].nodeName == "#text") {
-                                      count++;
-                                      texto = nodes[i].nodeValue.toLowerCase();
-                                      nodes[i].nodeValue = texto;
-                                      if (value == 'upper') {
-                                         nodes[i].nodeValue = texto.toUpperCase();
-                                      }
-                                      else if (value == 'sentence' && count==1) {
-                                         nodes[i].nodeValue = texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
-                                      } else if (value == 'title') {
-                                        var sentence = texto.split(" ");
-                                        for(var j = 0; j< sentence.length; j++){
-                                           sentence[j] = sentence[j][0].toUpperCase() + sentence[j].slice(1);
-                                        }
-                                        nodes[i].nodeValue = sentence.join(" ");
-                                      }
-                                  }
-                              }
-                          }
-                        """);
-                      }
-                    }
-                  }
-                },
-              ),
-            ),
-          ));
-        }
-      }
+      // if (t is ParagraphButtons) {
+      //   if (t.alignLeft || t.alignCenter || t.alignRight || t.alignJustify) {
+      //     toolbarChildren.add(ToggleButtons(
+      //       constraints: BoxConstraints.tightFor(
+      //         width: widget.htmlToolbarOptions.toolbarItemHeight - 2,
+      //         height: widget.htmlToolbarOptions.toolbarItemHeight - 2,
+      //       ),
+      //       color: widget.htmlToolbarOptions.buttonColor,
+      //       selectedColor: widget.htmlToolbarOptions.buttonSelectedColor,
+      //       fillColor: widget.htmlToolbarOptions.buttonFillColor,
+      //       focusColor: widget.htmlToolbarOptions.buttonFocusColor,
+      //       highlightColor: widget.htmlToolbarOptions.buttonHighlightColor,
+      //       hoverColor: widget.htmlToolbarOptions.buttonHoverColor,
+      //       splashColor: widget.htmlToolbarOptions.buttonSplashColor,
+      //       selectedBorderColor:
+      //           widget.htmlToolbarOptions.buttonSelectedBorderColor,
+      //       borderColor: widget.htmlToolbarOptions.buttonBorderColor,
+      //       borderRadius: widget.htmlToolbarOptions.buttonBorderRadius,
+      //       borderWidth: widget.htmlToolbarOptions.buttonBorderWidth,
+      //       renderBorder: widget.htmlToolbarOptions.renderBorder,
+      //       textStyle: widget.htmlToolbarOptions.textStyle,
+      //       onPressed: (int index) async {
+      //         void updateStatus() {
+      //           _alignSelected = List<bool>.filled(t.getIcons1().length, false);
+      //           setState(mounted, this.setState, () {
+      //             _alignSelected[index] = !_alignSelected[index];
+      //           });
+      //         }
+      //
+      //         if (t.getIcons1()[index].icon == Icons.format_align_left) {
+      //           var proceed = await widget.htmlToolbarOptions.onButtonPressed
+      //                   ?.call(ButtonType.alignLeft, _alignSelected[index],
+      //                       updateStatus) ??
+      //               true;
+      //           if (proceed) {
+      //             widget.controller.execCommand('justifyLeft');
+      //             updateStatus();
+      //           }
+      //         }
+      //         if (t.getIcons1()[index].icon == Icons.format_align_center) {
+      //           var proceed = await widget.htmlToolbarOptions.onButtonPressed
+      //                   ?.call(ButtonType.alignCenter, _alignSelected[index],
+      //                       updateStatus) ??
+      //               true;
+      //           if (proceed) {
+      //             widget.controller.execCommand('justifyCenter');
+      //             updateStatus();
+      //           }
+      //         }
+      //         if (t.getIcons1()[index].icon == Icons.format_align_right) {
+      //           var proceed = await widget.htmlToolbarOptions.onButtonPressed
+      //                   ?.call(ButtonType.alignRight, _alignSelected[index],
+      //                       updateStatus) ??
+      //               true;
+      //           if (proceed) {
+      //             widget.controller.execCommand('justifyRight');
+      //             updateStatus();
+      //           }
+      //         }
+      //         if (t.getIcons1()[index].icon == Icons.format_align_justify) {
+      //           var proceed = await widget.htmlToolbarOptions.onButtonPressed
+      //                   ?.call(ButtonType.alignJustify, _alignSelected[index],
+      //                       updateStatus) ??
+      //               true;
+      //           if (proceed) {
+      //             widget.controller.execCommand('justifyFull');
+      //             updateStatus();
+      //           }
+      //         }
+      //       },
+      //       isSelected: _alignSelected,
+      //       children: t.getIcons1(),
+      //     ));
+      //   }
+      //   if (t.increaseIndent || t.decreaseIndent) {
+      //     toolbarChildren.add(ToggleButtons(
+      //       constraints: BoxConstraints.tightFor(
+      //         width: widget.htmlToolbarOptions.toolbarItemHeight - 2,
+      //         height: widget.htmlToolbarOptions.toolbarItemHeight - 2,
+      //       ),
+      //       color: widget.htmlToolbarOptions.buttonColor,
+      //       selectedColor: widget.htmlToolbarOptions.buttonSelectedColor,
+      //       fillColor: widget.htmlToolbarOptions.buttonFillColor,
+      //       focusColor: widget.htmlToolbarOptions.buttonFocusColor,
+      //       highlightColor: widget.htmlToolbarOptions.buttonHighlightColor,
+      //       hoverColor: widget.htmlToolbarOptions.buttonHoverColor,
+      //       splashColor: widget.htmlToolbarOptions.buttonSplashColor,
+      //       selectedBorderColor:
+      //           widget.htmlToolbarOptions.buttonSelectedBorderColor,
+      //       borderColor: widget.htmlToolbarOptions.buttonBorderColor,
+      //       borderRadius: widget.htmlToolbarOptions.buttonBorderRadius,
+      //       borderWidth: widget.htmlToolbarOptions.buttonBorderWidth,
+      //       renderBorder: widget.htmlToolbarOptions.renderBorder,
+      //       textStyle: widget.htmlToolbarOptions.textStyle,
+      //       onPressed: (int index) async {
+      //         if (t.getIcons2()[index].icon == Icons.format_indent_increase) {
+      //           var proceed = await widget.htmlToolbarOptions.onButtonPressed
+      //                   ?.call(ButtonType.increaseIndent, null, null) ??
+      //               true;
+      //           if (proceed) {
+      //             widget.controller.execCommand('indent');
+      //           }
+      //         }
+      //         if (t.getIcons2()[index].icon == Icons.format_indent_decrease) {
+      //           var proceed = await widget.htmlToolbarOptions.onButtonPressed
+      //                   ?.call(ButtonType.decreaseIndent, null, null) ??
+      //               true;
+      //           if (proceed) {
+      //             widget.controller.execCommand('outdent');
+      //           }
+      //         }
+      //       },
+      //       isSelected: List<bool>.filled(t.getIcons2().length, false),
+      //       children: t.getIcons2(),
+      //     ));
+      //   }
+      //   if (t.lineHeight) {
+      //     toolbarChildren.add(Container(
+      //       padding: const EdgeInsets.only(left: 8.0),
+      //       height: widget.htmlToolbarOptions.toolbarItemHeight,
+      //       decoration: !widget.htmlToolbarOptions.renderBorder
+      //           ? null
+      //           : widget.htmlToolbarOptions.dropdownBoxDecoration ??
+      //               BoxDecoration(
+      //                   color: Theme.of(context).scaffoldBackgroundColor,
+      //                   border: Border.all(
+      //                       color: Theme.of(context)
+      //                           .colorScheme
+      //                           .onSurface
+      //                           .withOpacity(0.12))),
+      //       child: CustomDropdownButtonHideUnderline(
+      //         child: CustomDropdownButton<double>(
+      //           elevation: widget.htmlToolbarOptions.dropdownElevation,
+      //           icon: widget.htmlToolbarOptions.dropdownIcon,
+      //           iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
+      //           iconSize: widget.htmlToolbarOptions.dropdownIconSize,
+      //           itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
+      //           focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
+      //           dropdownColor:
+      //               widget.htmlToolbarOptions.dropdownBackgroundColor,
+      //           menuDirection:
+      //               widget.htmlToolbarOptions.dropdownMenuDirection ??
+      //                   (widget.htmlToolbarOptions.toolbarPosition ==
+      //                           ToolbarPosition.belowEditor
+      //                       ? DropdownMenuDirection.up
+      //                       : DropdownMenuDirection.down),
+      //           menuMaxHeight:
+      //               widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
+      //                   MediaQuery.of(context).size.height / 3,
+      //           style: widget.htmlToolbarOptions.textStyle,
+      //           items: [
+      //             CustomDropdownMenuItem(
+      //                 value: 1, child: PointerInterceptor(child: Text('1.0'))),
+      //             CustomDropdownMenuItem(
+      //               value: 1.2,
+      //               child: PointerInterceptor(child: Text('1.2')),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 1.4,
+      //               child: PointerInterceptor(child: Text('1.4')),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 1.5,
+      //               child: PointerInterceptor(child: Text('1.5')),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 1.6,
+      //               child: PointerInterceptor(child: Text('1.6')),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 1.8,
+      //               child: PointerInterceptor(child: Text('1.8')),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 2,
+      //               child: PointerInterceptor(child: Text('2.0')),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //                 value: 3, child: PointerInterceptor(child: Text('3.0'))),
+      //           ],
+      //           value: _lineHeightSelectedItem,
+      //           onChanged: (double? changed) async {
+      //             void updateSelectedItem(dynamic changed) {
+      //               if (changed is double) {
+      //                 setState(mounted, this.setState, () {
+      //                   _lineHeightSelectedItem = changed;
+      //                 });
+      //               }
+      //             }
+      //
+      //             if (changed != null) {
+      //               var proceed =
+      //                   await widget.htmlToolbarOptions.onDropdownChanged?.call(
+      //                           DropdownType.lineHeight,
+      //                           changed,
+      //                           updateSelectedItem) ??
+      //                       true;
+      //               if (proceed) {
+      //                 if (kIsWeb) {
+      //                   widget.controller.changeLineHeight(changed.toString());
+      //                 } else {
+      //                   await widget.controller.editorController!
+      //                       .evaluateJavascript(
+      //                           source:
+      //                               "\$('#summernote-2').summernote('lineHeight', '$changed');");
+      //                 }
+      //                 updateSelectedItem(changed);
+      //               }
+      //             }
+      //           },
+      //         ),
+      //       ),
+      //     ));
+      //   }
+      //   if (t.textDirection) {
+      //     toolbarChildren.add(ToggleButtons(
+      //       constraints: BoxConstraints.tightFor(
+      //         width: widget.htmlToolbarOptions.toolbarItemHeight - 2,
+      //         height: widget.htmlToolbarOptions.toolbarItemHeight - 2,
+      //       ),
+      //       color: widget.htmlToolbarOptions.buttonColor,
+      //       selectedColor: widget.htmlToolbarOptions.buttonSelectedColor,
+      //       fillColor: widget.htmlToolbarOptions.buttonFillColor,
+      //       focusColor: widget.htmlToolbarOptions.buttonFocusColor,
+      //       highlightColor: widget.htmlToolbarOptions.buttonHighlightColor,
+      //       hoverColor: widget.htmlToolbarOptions.buttonHoverColor,
+      //       splashColor: widget.htmlToolbarOptions.buttonSplashColor,
+      //       selectedBorderColor:
+      //           widget.htmlToolbarOptions.buttonSelectedBorderColor,
+      //       borderColor: widget.htmlToolbarOptions.buttonBorderColor,
+      //       borderRadius: widget.htmlToolbarOptions.buttonBorderRadius,
+      //       borderWidth: widget.htmlToolbarOptions.buttonBorderWidth,
+      //       renderBorder: widget.htmlToolbarOptions.renderBorder,
+      //       textStyle: widget.htmlToolbarOptions.textStyle,
+      //       onPressed: (int index) async {
+      //         void updateStatus() {
+      //           _textDirectionSelected = List<bool>.filled(2, false);
+      //           setState(mounted, this.setState, () {
+      //             _textDirectionSelected[index] =
+      //                 !_textDirectionSelected[index];
+      //           });
+      //         }
+      //
+      //         var proceed = await widget.htmlToolbarOptions.onButtonPressed
+      //                 ?.call(index == 0 ? ButtonType.ltr : ButtonType.rtl,
+      //                     _alignSelected[index], updateStatus) ??
+      //             true;
+      //         if (proceed) {
+      //           if (kIsWeb) {
+      //             widget.controller
+      //                 .changeTextDirection(index == 0 ? 'ltr' : 'rtl');
+      //           } else {
+      //             await widget.controller.editorController!
+      //                 .evaluateJavascript(source: """
+      //             var s=document.getSelection();
+      //             if(s==''){
+      //                 document.execCommand("insertHTML", false, "<p dir='${index == 0 ? "ltr" : "rtl"}'></p>");
+      //             }else{
+      //                 document.execCommand("insertHTML", false, "<div dir='${index == 0 ? "ltr" : "rtl"}'>"+ document.getSelection()+"</div>");
+      //             }
+      //           """);
+      //           }
+      //           updateStatus();
+      //         }
+      //       },
+      //       isSelected: _textDirectionSelected,
+      //       children: [
+      //         Icon(Icons.format_textdirection_l_to_r),
+      //         Icon(Icons.format_textdirection_r_to_l),
+      //       ],
+      //     ));
+      //   }
+      //   if (t.caseConverter) {
+      //     toolbarChildren.add(Container(
+      //       padding: const EdgeInsets.only(left: 8.0),
+      //       height: widget.htmlToolbarOptions.toolbarItemHeight,
+      //       decoration: !widget.htmlToolbarOptions.renderBorder
+      //           ? null
+      //           : widget.htmlToolbarOptions.dropdownBoxDecoration ??
+      //               BoxDecoration(
+      //                   color: Theme.of(context).scaffoldBackgroundColor,
+      //                   border: Border.all(
+      //                       color: Theme.of(context)
+      //                           .colorScheme
+      //                           .onSurface
+      //                           .withOpacity(0.12))),
+      //       child: CustomDropdownButtonHideUnderline(
+      //         child: CustomDropdownButton<String>(
+      //           elevation: widget.htmlToolbarOptions.dropdownElevation,
+      //           icon: widget.htmlToolbarOptions.dropdownIcon,
+      //           iconEnabledColor: widget.htmlToolbarOptions.dropdownIconColor,
+      //           iconSize: widget.htmlToolbarOptions.dropdownIconSize,
+      //           itemHeight: widget.htmlToolbarOptions.dropdownItemHeight,
+      //           focusColor: widget.htmlToolbarOptions.dropdownFocusColor,
+      //           dropdownColor:
+      //               widget.htmlToolbarOptions.dropdownBackgroundColor,
+      //           menuDirection:
+      //               widget.htmlToolbarOptions.dropdownMenuDirection ??
+      //                   (widget.htmlToolbarOptions.toolbarPosition ==
+      //                           ToolbarPosition.belowEditor
+      //                       ? DropdownMenuDirection.up
+      //                       : DropdownMenuDirection.down),
+      //           menuMaxHeight:
+      //               widget.htmlToolbarOptions.dropdownMenuMaxHeight ??
+      //                   MediaQuery.of(context).size.height / 3,
+      //           style: widget.htmlToolbarOptions.textStyle,
+      //           items: [
+      //             CustomDropdownMenuItem(
+      //               value: 'lower',
+      //               child: PointerInterceptor(child: Text('lowercase')),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 'sentence',
+      //               child: PointerInterceptor(child: Text('Sentence case')),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 'title',
+      //               child: PointerInterceptor(child: Text('Title Case')),
+      //             ),
+      //             CustomDropdownMenuItem(
+      //               value: 'upper',
+      //               child: PointerInterceptor(child: Text('UPPERCASE')),
+      //             ),
+      //           ],
+      //           hint: Text('Change case'),
+      //           value: null,
+      //           onChanged: (String? changed) async {
+      //             if (changed != null) {
+      //               var proceed = await widget
+      //                       .htmlToolbarOptions.onDropdownChanged
+      //                       ?.call(DropdownType.caseConverter, changed, null) ??
+      //                   true;
+      //               if (proceed) {
+      //                 if (kIsWeb) {
+      //                   widget.controller.changeCase(changed);
+      //                 } else {
+      //                   await widget.controller.editorController!
+      //                       .evaluateJavascript(source: """
+      //                     var selected = \$('#summernote-2').summernote('createRange');
+      //                     if(selected.toString()){
+      //                         var texto;
+      //                         var count = 0;
+      //                         var value = "$changed";
+      //                         var nodes = selected.nodes();
+      //                         for (var i=0; i< nodes.length; ++i) {
+      //                             if (nodes[i].nodeName == "#text") {
+      //                                 count++;
+      //                                 texto = nodes[i].nodeValue.toLowerCase();
+      //                                 nodes[i].nodeValue = texto;
+      //                                 if (value == 'upper') {
+      //                                    nodes[i].nodeValue = texto.toUpperCase();
+      //                                 }
+      //                                 else if (value == 'sentence' && count==1) {
+      //                                    nodes[i].nodeValue = texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
+      //                                 } else if (value == 'title') {
+      //                                   var sentence = texto.split(" ");
+      //                                   for(var j = 0; j< sentence.length; j++){
+      //                                      sentence[j] = sentence[j][0].toUpperCase() + sentence[j].slice(1);
+      //                                   }
+      //                                   nodes[i].nodeValue = sentence.join(" ");
+      //                                 }
+      //                             }
+      //                         }
+      //                     }
+      //                   """);
+      //                 }
+      //               }
+      //             }
+      //           },
+      //         ),
+      //       ),
+      //     ));
+      //   }
+      // }
       if (t is InsertButtons &&
           (t.audio ||
               t.video ||
@@ -1918,158 +1918,158 @@ class ToolbarWidgetState extends State<ToolbarWidget> {
                     });
               }
             }
-            if (t.getIcons()[index].icon == Icons.image_outlined) {
-              var proceed = await widget.htmlToolbarOptions.onButtonPressed
-                      ?.call(ButtonType.picture, null, null) ??
-                  true;
-              if (proceed) {
-                final filename = TextEditingController();
-                final url = TextEditingController();
-                final urlFocus = FocusNode();
-                FilePickerResult? result;
-                String? validateFailed;
-                await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return PointerInterceptor(
-                        child: StatefulBuilder(builder:
-                            (BuildContext context, StateSetter setState) {
-                          return AlertDialog(
-                            title: Text('Insert Image'),
-                            scrollable: true,
-                            content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Select from files',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 10),
-                                  TextFormField(
-                                      controller: filename,
-                                      readOnly: true,
-                                      decoration: InputDecoration(
-                                        prefixIcon: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              primary: Theme.of(context)
-                                                  .dialogBackgroundColor,
-                                              padding: EdgeInsets.only(
-                                                  left: 5, right: 5),
-                                              elevation: 0.0),
-                                          onPressed: () async {
-                                            result = await FilePicker.platform
-                                                .pickFiles(
-                                              type: FileType.image,
-                                              withData: true,
-                                              allowedExtensions: widget
-                                                  .htmlToolbarOptions
-                                                  .imageExtensions,
-                                            );
-                                            if (result?.files.single.name !=
-                                                null) {
-                                              setState(() {
-                                                filename.text =
-                                                    result!.files.single.name;
-                                              });
-                                            }
-                                          },
-                                          child: Text('Choose image',
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1
-                                                      ?.color)),
-                                        ),
-                                        suffixIcon: result != null
-                                            ? IconButton(
-                                                icon: Icon(Icons.close),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    result = null;
-                                                    filename.text = '';
-                                                  });
-                                                })
-                                            : Container(height: 0, width: 0),
-                                        errorText: validateFailed,
-                                        errorMaxLines: 2,
-                                        border: InputBorder.none,
-                                      )),
-                                  SizedBox(height: 20),
-                                  Text('URL',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 10),
-                                  TextField(
-                                    controller: url,
-                                    focusNode: urlFocus,
-                                    textInputAction: TextInputAction.done,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      hintText: 'URL',
-                                      errorText: validateFailed,
-                                      errorMaxLines: 2,
-                                    ),
-                                  ),
-                                ]),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () async {
-                                  if (filename.text.isEmpty &&
-                                      url.text.isEmpty) {
-                                    setState(() {
-                                      validateFailed =
-                                          'Please either choose an image or enter an image URL!';
-                                    });
-                                  } else if (filename.text.isNotEmpty &&
-                                      url.text.isNotEmpty) {
-                                    setState(() {
-                                      validateFailed =
-                                          'Please input either an image or an image URL, not both!';
-                                    });
-                                  } else if (filename.text.isNotEmpty &&
-                                      result?.files.single.bytes != null) {
-                                    var base64Data = base64
-                                        .encode(result!.files.single.bytes!);
-                                    var proceed = await widget
-                                            .htmlToolbarOptions
-                                            .mediaUploadInterceptor
-                                            ?.call(result!.files.single,
-                                                InsertFileType.image) ??
-                                        true;
-                                    if (proceed) {
-                                      widget.controller.insertHtml(
-                                          "<img src='data:image/${result!.files.single.extension};base64,$base64Data' data-filename='${result!.files.single.name}'/>");
-                                    }
-                                    Navigator.of(context).pop();
-                                  } else {
-                                    var proceed = await widget
-                                            .htmlToolbarOptions
-                                            .mediaLinkInsertInterceptor
-                                            ?.call(url.text,
-                                                InsertFileType.image) ??
-                                        true;
-                                    if (proceed) {
-                                      widget.controller
-                                          .insertNetworkImage(url.text);
-                                    }
-                                    Navigator.of(context).pop();
-                                  }
-                                },
-                                child: Text('OK'),
-                              )
-                            ],
-                          );
-                        }),
-                      );
-                    });
-              }
-            }
+            // if (t.getIcons()[index].icon == Icons.image_outlined) {
+            //   var proceed = await widget.htmlToolbarOptions.onButtonPressed
+            //           ?.call(ButtonType.picture, null, null) ??
+            //       true;
+            //   if (proceed) {
+            //     final filename = TextEditingController();
+            //     final url = TextEditingController();
+            //     final urlFocus = FocusNode();
+            //     FilePickerResult? result;
+            //     String? validateFailed;
+            //     await showDialog(
+            //         context: context,
+            //         builder: (BuildContext context) {
+            //           return PointerInterceptor(
+            //             child: StatefulBuilder(builder:
+            //                 (BuildContext context, StateSetter setState) {
+            //               return AlertDialog(
+            //                 title: Text('Insert Image'),
+            //                 scrollable: true,
+            //                 content: Column(
+            //                     mainAxisSize: MainAxisSize.min,
+            //                     crossAxisAlignment: CrossAxisAlignment.start,
+            //                     children: [
+            //                       Text('Select from files',
+            //                           style: TextStyle(
+            //                               fontWeight: FontWeight.bold)),
+            //                       SizedBox(height: 10),
+            //                       TextFormField(
+            //                           controller: filename,
+            //                           readOnly: true,
+            //                           decoration: InputDecoration(
+            //                             prefixIcon: ElevatedButton(
+            //                               style: ElevatedButton.styleFrom(
+            //                                   primary: Theme.of(context)
+            //                                       .dialogBackgroundColor,
+            //                                   padding: EdgeInsets.only(
+            //                                       left: 5, right: 5),
+            //                                   elevation: 0.0),
+            //                               onPressed: () async {
+            //                                 result = await FilePicker.platform
+            //                                     .pickFiles(
+            //                                   type: FileType.image,
+            //                                   withData: true,
+            //                                   allowedExtensions: widget
+            //                                       .htmlToolbarOptions
+            //                                       .imageExtensions,
+            //                                 );
+            //                                 if (result?.files.single.name !=
+            //                                     null) {
+            //                                   setState(() {
+            //                                     filename.text =
+            //                                         result!.files.single.name;
+            //                                   });
+            //                                 }
+            //                               },
+            //                               child: Text('Choose image',
+            //                                   style: TextStyle(
+            //                                       color: Theme.of(context)
+            //                                           .textTheme
+            //                                           .bodyText1
+            //                                           ?.color)),
+            //                             ),
+            //                             suffixIcon: result != null
+            //                                 ? IconButton(
+            //                                     icon: Icon(Icons.close),
+            //                                     onPressed: () {
+            //                                       setState(() {
+            //                                         result = null;
+            //                                         filename.text = '';
+            //                                       });
+            //                                     })
+            //                                 : Container(height: 0, width: 0),
+            //                             errorText: validateFailed,
+            //                             errorMaxLines: 2,
+            //                             border: InputBorder.none,
+            //                           )),
+            //                       SizedBox(height: 20),
+            //                       Text('URL',
+            //                           style: TextStyle(
+            //                               fontWeight: FontWeight.bold)),
+            //                       SizedBox(height: 10),
+            //                       TextField(
+            //                         controller: url,
+            //                         focusNode: urlFocus,
+            //                         textInputAction: TextInputAction.done,
+            //                         decoration: InputDecoration(
+            //                           border: OutlineInputBorder(),
+            //                           hintText: 'URL',
+            //                           errorText: validateFailed,
+            //                           errorMaxLines: 2,
+            //                         ),
+            //                       ),
+            //                     ]),
+            //                 actions: [
+            //                   TextButton(
+            //                     onPressed: () {
+            //                       Navigator.of(context).pop();
+            //                     },
+            //                     child: Text('Cancel'),
+            //                   ),
+            //                   TextButton(
+            //                     onPressed: () async {
+            //                       if (filename.text.isEmpty &&
+            //                           url.text.isEmpty) {
+            //                         setState(() {
+            //                           validateFailed =
+            //                               'Please either choose an image or enter an image URL!';
+            //                         });
+            //                       } else if (filename.text.isNotEmpty &&
+            //                           url.text.isNotEmpty) {
+            //                         setState(() {
+            //                           validateFailed =
+            //                               'Please input either an image or an image URL, not both!';
+            //                         });
+            //                       } else if (filename.text.isNotEmpty &&
+            //                           result?.files.single.bytes != null) {
+            //                         var base64Data = base64
+            //                             .encode(result!.files.single.bytes!);
+            //                         var proceed = await widget
+            //                                 .htmlToolbarOptions
+            //                                 .mediaUploadInterceptor
+            //                                 ?.call(result!.files.single,
+            //                                     InsertFileType.image) ??
+            //                             true;
+            //                         if (proceed) {
+            //                           widget.controller.insertHtml(
+            //                               "<img src='data:image/${result!.files.single.extension};base64,$base64Data' data-filename='${result!.files.single.name}'/>");
+            //                         }
+            //                         Navigator.of(context).pop();
+            //                       } else {
+            //                         var proceed = await widget
+            //                                 .htmlToolbarOptions
+            //                                 .mediaLinkInsertInterceptor
+            //                                 ?.call(url.text,
+            //                                     InsertFileType.image) ??
+            //                             true;
+            //                         if (proceed) {
+            //                           widget.controller
+            //                               .insertNetworkImage(url.text);
+            //                         }
+            //                         Navigator.of(context).pop();
+            //                       }
+            //                     },
+            //                     child: Text('OK'),
+            //                   )
+            //                 ],
+            //               );
+            //             }),
+            //           );
+            //         });
+            //   }
+            // }
             if (t.getIcons()[index].icon == Icons.audiotrack_outlined) {
               var proceed = await widget.htmlToolbarOptions.onButtonPressed
                       ?.call(ButtonType.audio, null, null) ??

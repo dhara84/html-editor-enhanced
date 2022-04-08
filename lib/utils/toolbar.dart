@@ -59,8 +59,8 @@ class FontButtons extends Toolbar {
   List<Icon> getIcons2() {
     var icons = <Icon>[];
     if (strikethrough) icons.add(Icon(Icons.format_strikethrough));
-    if (superscript) icons.add(Icon(Icons.superscript));
-    if (subscript) icons.add(Icon(Icons.subscript));
+    // if (superscript) icons.add(Icon(Icons.superscript));
+    // if (subscript) icons.add(Icon(Icons.subscript));
     return icons;
   }
 }
