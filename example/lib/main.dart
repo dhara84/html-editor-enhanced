@@ -65,6 +65,7 @@ class _HtmlEditorExampleState extends State<HtmlEditorExample> {
               child: Container(
                 color: Colors.black12,
                 height: 300,
+
                 child: HtmlEditor(
                   controller: controller,
                   htmlEditorOptions: const HtmlEditorOptions(
