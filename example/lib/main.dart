@@ -80,6 +80,7 @@ class _HtmlEditorExampleState extends State<HtmlEditorExample> {
                     //       "button '${describeEnum(type)}' pressed, the current selected status is $status");
                     //   return true;
                     // },
+
                     onDropdownChanged: (DropdownType type, dynamic changed,
                         Function(dynamic)? updateSelectedItem) {
                       print(
