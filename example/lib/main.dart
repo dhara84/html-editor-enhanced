@@ -30,7 +30,7 @@ class HtmlEditorExampleApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(),
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.light(),
       home: HtmlEditorExample(title: 'Flutter HTML Editor Example'),
     );
   }
@@ -48,7 +48,7 @@ class HtmlEditorExample extends StatefulWidget {
 class _HtmlEditorExampleState extends State<HtmlEditorExample> {
   String result = '';
   final HtmlEditorController controller = HtmlEditorController();
-
+    bool onTapChange = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,9 +63,12 @@ class _HtmlEditorExampleState extends State<HtmlEditorExample> {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Container(
-                color: Colors.black12,
-                height: 300,
-
+               
+                height: 200,
+                decoration: BoxDecoration( color: Colors.black12,
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  border:  Border.all(color: onTapChange ? Colors.indigo : Colors.black26)
+                ),
                 child: HtmlEditor(
                   controller: controller,
                   htmlEditorOptions: const HtmlEditorOptions(
@@ -101,7 +104,7 @@ class _HtmlEditorExampleState extends State<HtmlEditorExample> {
                       return true;
                     },
                   ),
-                  otherOptions: const OtherOptions(height: 550),
+                 // otherOptions:  OtherOptions(height: 550),
                   callbacks: Callbacks(onBeforeCommand: (String? currentHtml) {
                     print('html before change is $currentHtml');
                   }, onChangeContent: (String? changed) {
@@ -116,6 +119,9 @@ class _HtmlEditorExampleState extends State<HtmlEditorExample> {
                   }, onEnter: () {
                     print('enter/return pressed');
                   }, onFocus: () {
+                    setState(() {
+                      onTapChange = true;
+                    });
                     print('editor focused');
                   }, onBlur: () {
                     print('editor unfocused');

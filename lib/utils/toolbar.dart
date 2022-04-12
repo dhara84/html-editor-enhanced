@@ -167,7 +167,7 @@ class InsertButtons extends Toolbar {
   List<Icon> getIcons() {
     var icons = <Icon>[];
     if (link) icons.add(Icon(Icons.link));
-    if (picture) icons.add(Icon(Icons.image_outlined));
+    // if (picture) icons.add(Icon(Icons.image_outlined));
     if (audio) icons.add(Icon(Icons.audiotrack_outlined));
     if (video) icons.add(Icon(Icons.videocam_outlined));
     if (otherFile) icons.add(Icon(Icons.attach_file));

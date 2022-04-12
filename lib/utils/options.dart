@@ -412,10 +412,11 @@ class OtherOptions {
     this.decoration = const BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(4)),
       border:
-          Border.fromBorderSide(BorderSide(color: Color(0xffececec), width: 1)),
+          Border.fromBorderSide(BorderSide(color: Colors.black, width: 1)),
     ),
     this.height = 400,
   });
+
 
   /// The BoxDecoration to use around the Html editor. By default, the widget
   /// uses a thin, dark, rounded rectangle border around the widget.

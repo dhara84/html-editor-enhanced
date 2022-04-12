@@ -117,7 +117,12 @@ class _HtmlEditorWidgetMobileState extends State<HtmlEditorWidget> {
         },
         child: Container(
           height: docHeight + 10,
-          decoration: widget.otherOptions.decoration,
+          //decoration: widget.otherOptions.decoration,
+          /*decoration:  BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            border:
+            Border.fromBorderSide(BorderSide(color: Color(0xffececec), width: 1)),
+          ),*/
           child: Column(
             children: [
               widget.htmlToolbarOptions.toolbarPosition ==
